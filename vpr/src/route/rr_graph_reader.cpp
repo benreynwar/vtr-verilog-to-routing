@@ -243,10 +243,14 @@ void process_switches(pugi::xml_node parent, const pugiutil::loc_data & loc_data
             rr_switch.Cout = 0;
             rr_switch.Tdel = 0;
         }
-        SwitchSubnode = get_single_child(Switch, "sizing", loc_data);
-        rr_switch.mux_trans_size = get_attribute(SwitchSubnode, "mux_trans_size", loc_data).as_float();
-        rr_switch.buf_size = get_attribute(SwitchSubnode, "buf_size", loc_data).as_float();
-
+        SwitchSubnode = get_single_child(Switch, "sizing", loc_data, OPTIONAL);
+        if (SwitchSubnode) {
+            rr_switch.mux_trans_size = get_attribute(SwitchSubnode, "mux_trans_size", loc_data).as_float();
+            rr_switch.buf_size = get_attribute(SwitchSubnode, "buf_size", loc_data).as_float();
+        } else {
+            rr_switch.mux_trans_size = 0;
+            rr_switch.buf_size = 0;
+        }
         Switch = Switch.next_sibling(Switch.name());
     }
 
